@@ -4,7 +4,7 @@
 # base notebook, contains Jupyter and relevant tools
 # See https://github.com/ucsd-ets/datahub-docker-stack/wiki/Stable-Tag 
 # for a list of the most current containers we maintain
-ARG BASE_CONTAINER=ucsdets/datahub-base-notebook:2022.3-stable
+ARG BASE_CONTAINER=ucsdets/scipy-ml-notebook:2023.1-stable
 
 FROM $BASE_CONTAINER
 
@@ -15,12 +15,14 @@ USER root
 
 RUN apt-get -y install htop
 
+RUN apt update && apt install -y python3-pip nvidia-cuda-toolkit
+
 # 3) install packages using notebook user
-USER jovyan
+USER thesis-lidar:adkang
 
 # RUN conda install -y scikit-learn
 
-RUN pip install --no-cache-dir networkx scipy
+RUN pip install -y --no-cache-dir networkx scipy numpy
 
 # Override command to disable running jupyter notebook at launch
 # CMD ["/bin/bash"]
